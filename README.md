@@ -1,30 +1,51 @@
-# MultiLoader Template
+# <img src="media/icon_small.png" width="128" title="Sparse Structs Icon" style="vertical-align: middle"> Sparse Structures
+A simple and configurable mod that makes all (even datapacks and modded) structures more spread out (or more common!), essentially making them rarer/easier to find. Useful in big modpacks with a lot of structures mod to encourage exploration and make the experience more challenging or balanced.
 
-This project provides a Gradle project template that can compile mods for multiple modloaders using a common sourceset. This project does not require any third party libraries or dependencies. If you have any questions or want to discuss the project join our [Discord](https://discord.myceliummod.network).
+> Notice: this does not alter the generation of ores/geodes or other features of this kind, and alters very slightly the terrain and trees (not enough to be an issue to most players).
 
-## Getting Started
+## Examples
+![Comparison between two world on the same seed, the one on the left showing a witch hut and a mansion (without the mod), the one on the right showing the same terrain but without those structures](media/example1.png)
 
-### IntelliJ IDEA
-This guide will show how to import the MultiLoader Template into IntelliJ IDEA. The setup process is roughly equivalent to setting up the modloaders independently and should be very familiar to anyone who has worked with their MDKs.
+### In a modded environment:
+![First screenshot of the comparison, showing many (maybe too many) structures at once in the ocean because of the quantity of structure mods installed.](media/example2_1.png)
+![Second screenshot of the comparison, showing lot less structures in the same world (seed), at the same coordinates.](media/example2_2.png)
+<details><summary>Structure Mods in the picture :</summary>
+Tidal towns, Explorify, all Yung's mods, Just Another Structure Pack, MVS, Explorations, Towns and Towers, Dungeons and Taverns...
+</details>
 
-1. Clone or download this repository to your computer.
-2. Configure the project by editing the `group`, `mod_name`, `mod_author`, and `mod_id` properties in the `gradle.properties` file. You will also need to change the `rootProject.name`  property in `settings.gradle`, this should match the folder name of your project, or else IDEA may complain.
-3. Open the template's root folder as a new project in IDEA. This is the folder that contains this README file and the gradlew executable.
-4. If your default JVM/JDK is not Java 21 you will encounter an error when opening the project. This error is fixed by going to `File > Settings > Build, Execution, Deployment > Build Tools > Gradle > Gradle JVM` and changing the value to a valid Java 21 JVM. You will also need to set the Project SDK to Java 21. This can be done by going to `File > Project Structure > Project SDK`. Once both have been set open the Gradle tab in IDEA and click the refresh button to reload the project.
-5. Open the Gradle tab in IDEA if it has not already been opened. Navigate to `Your Project > Common > Tasks > vanilla gradle > decompile`. Run this task to decompile Minecraft.
-6. Open your Run/Debug Configurations. Under the Application category there should now be options to run NeoForge and Fabric projects. Select one of the client options and try to run it.
-7. Assuming you were able to run the game in step 7 your workspace should now be set up.
+## Features
+* **Configurable** : you can change the rarity of all individual structures, even from mods and datapacks.
+* **MC-177381 fix** : fixes the bug where `/locate` returns an incorrect distance between the player and the structure.
+* **Dump Structure Sets** : you can dump all structure sets to a file in the right format for the config using `/dumpstructuresets`.
+* **No separation limit** : In vanilla, the separation between structures is limited to 4096 chunks (65k blocks). This mod removes this limit, allowing structures to be even more spread out (if for any reason you need structures to be that rare).
 
-### Eclipse
-While it is possible to use this template in Eclipse it is not recommended. During the development of this template multiple critical bugs and quirks related to Eclipse were found at nearly every level of the required build tools. While we continue to work with these tools to report and resolve issues support for projects like these are not there yet. For now Eclipse is considered unsupported by this project. The development cycle for build tools is notoriously slow so there are no ETAs available.
+## Configuration
+The config can be found in the `config` folder of your instance, and is named `sparsestructures.json5`. It contains the following options :
+* `spreadFactor` : the factor by which the separation and spacing of structures should be multiplied. The default value is `2`, which means that structures will be twice as rare. If you want structures to be more common, you can set this value to `0.5` for example.
+    * ⚠️ **Warning** : a very low value (like `0.01`) makes the world generation process considerably slower (and your world will become filled with overlapping structures).
+* `customSpreadFactors` : a list of custom spread factors for specific structures. The default value makes the mansion twice as rare as an example (which has no effects with a global `spreadFactor` of 2). If you want to change the spread factor of a structure, you can add an entry to this list. Each entry is a JSON object with two fields : `name` (the name of the structure) and `spreadFactor` (the spread factor of the structure). Here's an example :
+```json5
+{
+    "name": "minecraft:mansion",
+    "spreadFactor": 2
+}
+// More detailed info can be found inside the config file
+```
+> Tip: you can dump all structure sets to a file in the right format by using the custom command `/dumpstructuresets`
 
-## Development Guide
-When using this template the majority of your mod is developed in the Common project. The Common project is compiled against the vanilla game and is used to hold code that is shared between the different loader-specific versions of your mod. The Common project has no knowledge or access to ModLoader specific code, apis, or concepts. Code that requires something from a specific loader must be done through the project that is specific to that loader, such as the NeoForge or Fabric project.
+For now, you have to restart the game for the config to be reloaded. This behavior may change in the future.
 
-Loader specific projects such as the NeoForge and Fabric project are used to load the Common project into the game. These projects also define code that is specific to that loader. Loader specific projects can access all of the code in the Common project. It is important to remember that the Common project can not access code from loader specific projects.
+## Dependencies
+This mod doesn't have any (not even fabric-api).
 
-## Removing Platforms and Loaders
-While the MultiLoader Template includes support for many platforms and loaders you can easily remove support for the ones you don't need. This can be done by deleting the subproject folder and then removing it from the `settings.gradle` file. For example if you wanted to remove support for Forge you would follow the following steps. 
+## Future Updates
+* Ban specific structures from generating
+* World-specific configs
+* Support for frequency-based structure generation
+* Support for structure tags in the config
+* *Open an issue on this project's repo if you have any suggestion!*
+* *~~Add a config~~* (added in v2.0)
 
-1. Delete the subproject folder. For example, delete `MultiLoader-Template/forge`.
-2. Remove the project from `settings.gradle`. For example, remove `include("forge")`. 
+## Credits
+Icon made with [Gimp](https://www.gimp.org/) using [Twemoji](https://github.com/twitter/twemoji) and [FiraCode](https://github.com/tonsky/FiraCode)  
+[Multiloader Template](https://github.com/jaredlll08/MultiLoader-Template) by jaredlll08

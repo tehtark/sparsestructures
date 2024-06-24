@@ -36,7 +36,7 @@ The config can be found in the `config` folder of your instance, and is named `s
 For now, you have to restart the game for the config to be reloaded. This behavior may change in the future.
 
 ## Dependencies
-This mod doesn't have any (not even fabric-api).
+Fabric API (if you're using Fabric, or use the Quilt equivalent)
 
 ## Future Updates
 * Ban specific structures from generating
